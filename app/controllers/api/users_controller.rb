@@ -13,6 +13,9 @@ class Api::UsersController < ApplicationController
 
     def login 
         user = User.find_by(email: user_params['email'])
+        if user.nil?
+            raise Exception.new("User does not exist")
+        end
         if user.valid_password?(user_params['password'])
             token = encode_to_jwt({user_id: user.id})
             render json: {error:false,  auth_token:token}
