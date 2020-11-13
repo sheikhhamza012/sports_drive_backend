@@ -15,8 +15,6 @@ development:
 
 
 production:
-  <<: *default
-  service: Disk
   database: <%= ENV['DATABASE_URL'] %>
    
 test:
