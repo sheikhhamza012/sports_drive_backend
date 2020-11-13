@@ -14,9 +14,10 @@ development:
   database: sports_drive
 
 
-local:
+production:
+  <<: *default
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  database: <%= ENV['DATABASE_URL'] %>
    
 test:
   service: Disk
