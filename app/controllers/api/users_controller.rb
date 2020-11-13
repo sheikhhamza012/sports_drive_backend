@@ -8,7 +8,7 @@ class Api::UsersController < ApplicationController
         end       
     rescue Exception=>e
         first_error_key = user.errors.messages.keys.first
-        render json: {error:true,  msg:"#{first_error_key.to_s} #{user.errors.messages[first_error_key].first}"}
+        render json: {error:true,keys:user.errors.messages.keys,  msg:"#{first_error_key.to_s} #{user.errors.messages[first_error_key].first}"}
     end
 
     def login 
