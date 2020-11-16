@@ -1,16 +1,19 @@
 class Api::UsersController < ApplicationController 
-    skip_before_action :authorise
+    skip_before_action :authorise, except: [:get_user]
     def create 
         user = User.new(user_params)
         if user.save!
             token = encode_to_jwt({user_id: user.id})
-            render json: {error:false,  auth_token:token}
+            render json: {error:false,  auth_token:token,user: user}
         end       
     rescue Exception=>e
         first_error_key = user.errors.messages.keys.first
         render json: {error:true,keys:user.errors.messages.keys,  msg:"#{first_error_key.to_s} #{user.errors.messages[first_error_key].first}"}
     end
-
+    def get_user
+        render json: {error:false,  user: current_user}
+        
+    end
     def login 
         user = User.find_by(email: user_params['email'])
         if user.nil?
@@ -18,7 +21,7 @@ class Api::UsersController < ApplicationController
         end
         if user.valid_password?(user_params['password'])
             token = encode_to_jwt({user_id: user.id})
-            render json: {error:false,  auth_token:token}
+            render json: {error:false,  auth_token:token,user: user}
             return
         end
         raise Exception.new("Email and password does not match")
