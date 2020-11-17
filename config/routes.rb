@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       collection do
         post :login
         get :get_user
+        patch '', to: 'users#update'
       end
     end
   end  
