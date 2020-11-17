@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :phone,  length: { minimum: 11,maximum: 12 }, uniqueness: true
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  enum player_of: ["Cricket","Footbal","Basket Ball","Badminton","Squash","Swimming","Tennis","Table Tenis"]
+  enum player_of: ["Cricket","Football","Basket Ball","Badminton","Squash","Swimming","Tennis","Table Tenis"]
   mount_uploader :image, ImageUploader
   def get_visible_attr
     user = attributes.slice("id","first_name","last_name","email","phone","city","isVendor","about","featured","rating","player_of")
