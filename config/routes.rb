@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users  
   namespace :api, defaults: { format: :json } do
     
-    resources :tests 
+    resources :tests
+    resources :arena_booking_request
     resources :arena do
       member do
         post :book_arena

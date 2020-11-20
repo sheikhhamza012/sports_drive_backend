@@ -1,10 +1,10 @@
 class ArenaBookingRequest < ApplicationRecord
-    enum status: [:pending,:accepted,:declined]
+    enum status: ["Pending","Accepted","Declined"]
     belongs_to :user
     belongs_to :arena
     validates :from_time, presence: true
     validates :to_time, presence: true
-    validate :booking_available, :times_are_valid
+    validate :booking_available, :times_are_valid, :on => :create
 
     def booking_available
         records_in_time = arena.arena_booking_requests.where(from_time: from_time..to_time, status:"accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"accepted"))
