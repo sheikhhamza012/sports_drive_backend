@@ -7,7 +7,7 @@ class ArenaBookingRequest < ApplicationRecord
     validate :booking_available, :times_are_valid, :on => :create
 
     def booking_available
-        records_in_time = arena.arena_booking_requests.where(from_time: from_time..to_time, status:"accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"accepted"))
+        records_in_time = arena.arena_booking_requests.where(from_time: from_time..to_time, status:"Accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"Accepted"))
         if records_in_time.size>0
             errors.add(:from_time, "the Arena is not available for this duration")
         end
