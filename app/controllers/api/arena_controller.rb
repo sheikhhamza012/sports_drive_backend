@@ -14,6 +14,11 @@ class Api::ArenaController < ApplicationController
     def search_by_availability
         @arenas = Arena.get_available_arenas(params[:location],params[:from_time],params[:to_time])
         render 'show'
+    
+    rescue Exception=>e
+        
+        render json:{error:true, msg:e.message}
+
     end
     def book_arena
         booking = current_user.arena_booking_requests.new(arena_booking_request_params)
