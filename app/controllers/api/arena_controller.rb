@@ -1,5 +1,5 @@
 class Api::ArenaController < ApplicationController 
-    before_action :set_arena, except: [:create,:search]
+    before_action :set_arena, except: [:create,:search,:search_by_availability]
     def create 
 
     end
@@ -8,8 +8,11 @@ class Api::ArenaController < ApplicationController
         
     end
     def search
-        puts params["keyword"] 
         @arenas = Arena.where("name ILIKE ? or location ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
+        render 'show'
+    end
+    def search_by_availability
+        @arenas = Arena.get_available_arenas(params[:location],params[:from_time],params[:to_time])
         render 'show'
     end
     def book_arena

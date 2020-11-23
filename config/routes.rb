@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       end
       collection do
         post :search
+        post :search_by_availability
       end
     end
     resources :users do 
