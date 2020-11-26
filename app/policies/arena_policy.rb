@@ -21,5 +21,9 @@ class ArenaPolicy < ApplicationPolicy
   def book_arena?
     !user.isVendor 
   end
+  def show?
+    true 
+  end
   
+
 end

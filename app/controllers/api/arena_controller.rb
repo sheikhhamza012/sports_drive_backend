@@ -3,17 +3,19 @@ class Api::ArenaController < ApplicationController
     def create 
 
     end
- 
+    def show
+        render 'show'
+    end
     def update
         
     end
     def search
         @arenas = Arena.where("name ILIKE ? or location ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
-        render 'show'
+        render 'index'
     end
     def search_by_availability
         @arenas = Arena.get_available_arenas(params[:location],params[:from_time],params[:to_time])
-        render 'show'
+        render 'index'
     
     rescue Exception=>e
         
