@@ -1,6 +1,8 @@
 class Api::ArenaBookingRequestController < ApplicationController 
     def index
         @requests = current_user.arena_booking_requests
+        @active_request = @requests.where('from_time >= ? or to_time > ?', Time.now, Time.now).order(:from_time).first
+
     rescue Exception=>e
         render json:{error: true, msg: e.message}
     end

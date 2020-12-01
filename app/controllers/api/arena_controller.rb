@@ -26,8 +26,8 @@ class Api::ArenaController < ApplicationController
         booking = current_user.arena_booking_requests.new(arena_booking_request_params)
         booking.arena = @arena
         if booking.save!
-            
-            render json:{error:false, msg:"The booking request is sent to owner"}
+            @request = booking
+            render 'api/arena_booking_request/show'
         end
     rescue Exception => e
         render json:{error:true, msg:booking.errors.first.last}
