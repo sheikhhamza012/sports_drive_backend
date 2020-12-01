@@ -3,6 +3,7 @@ json.requests @requests do |r|
     json.id r.id
     json.from_time r.from_time
     json.to_time r.to_time
+    json.price r.price
     json.status r.status
     json.arena do
         json.id r.arena.id

@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     
     resources :tests
-    resources :arena_booking_request
+    resources :arena_booking_request do
+      collection do
+        get :get_active_request
+      end
+    end
     resources :arena do
       member do
         post :book_arena
