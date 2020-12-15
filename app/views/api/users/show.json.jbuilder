@@ -9,7 +9,12 @@ json.user do
     json.email current_user.email
     json.phone current_user.phone
     json.city current_user.city
-    json.isVendor current_user.isVendor
+    if current_user.vendor_detail
+        json.vendor_detail do
+            json.id_card current_user.vendor_detail&.id_card
+            json.request_status current_user.vendor_detail&.request_status
+        end
+    end
     json.about current_user.about
     json.featured current_user.featured
     json.rating current_user.rating

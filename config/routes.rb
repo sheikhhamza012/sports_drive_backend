@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :users do 
       collection do
         post :login
+        post :become_a_vendor
         get :get_user
         patch '', to: 'users#update'
       end

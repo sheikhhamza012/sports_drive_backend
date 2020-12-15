@@ -12,10 +12,10 @@ class User < ApplicationRecord
   enum player_of: ["Cricket","Football","Basket Ball","Badminton","Squash","Swimming","Tennis","Table Tenis"]
   mount_uploader :image, ImageUploader
 
-  has_many :arenas, dependent: :destroy
+  has_one :arena, dependent: :destroy
   has_many :arena_booking_requests, dependent: :destroy
   has_many :booked_arenas,through: :arena_booking_requests, dependent: :destroy, source: :arena
-
+  has_one :vendor_detail
   def get_visible_attr
     user = attributes.slice("id","first_name","last_name","email","phone","city","isVendor","about","featured","rating","player_of")
   end
