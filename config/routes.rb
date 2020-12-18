@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       collection do
         post :search
         post :search_by_availability
+        get :my_arenas
       end
     end
     resources :users do 
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
         get :get_user
         patch '', to: 'users#update'
       end
+      
     end
   end  
 end

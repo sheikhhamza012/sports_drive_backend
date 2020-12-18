@@ -1,13 +1,9 @@
-class Api::ArenaController < ApplicationController 
-    before_action :set_arena, except: [:create,:search,:search_by_availability,:my_arenas]
+class Api::GroupsController < ApplicationController 
+    before_action :set_arena, except: [:create,:search,:search_by_availability]
     def create 
 
     end
     def show
-        render 'show'
-    end
-    def my_arenas
-        @arena = current_user.arena
         render 'show'
     end
     def update
