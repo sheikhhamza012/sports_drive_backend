@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :users  
   namespace :api, defaults: { format: :json } do
     
-    resources :tests
+    resources :groups do
+      resources :prices
+    end
     resources :arena_booking_request do
       collection do
         get :get_active_request

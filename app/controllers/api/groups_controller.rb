@@ -1,5 +1,5 @@
 class Api::GroupsController < ApplicationController 
-    before_action :set_arena, except: [:create,:search,:search_by_availability]
+    before_action :set_group, except: [:create,:search,:search_by_availability]
     def create 
 
     end
@@ -35,9 +35,11 @@ class Api::GroupsController < ApplicationController
 
     private
 
-    def set_arena
-        @arena = Arena.find(params[:id])
-        authorize @arena
+    def set_group
+        if params[:id].present?
+            @group = Group.find(params[:id])
+            authorize @group
+        end
     rescue Exception => e
         msg = "Error occured, Try again later"
         if e.class == Pundit::NotAuthorizedError
