@@ -22,16 +22,7 @@ class Api::GroupsController < ApplicationController
         render json:{error:true, msg:e.message}
 
     end
-    def book_arena
-        booking = current_user.arena_booking_requests.new(arena_booking_request_params)
-        booking.arena = @arena
-        if booking.save!
-            @request = booking
-            render 'api/arena_booking_request/show'
-        end
-    rescue Exception => e
-        render json:{error:true, msg:booking.errors.first.last}
-    end
+    
 
     private
 

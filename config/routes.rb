@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   devise_for :users  
   namespace :api, defaults: { format: :json } do
     
+    resources :fields do
+      member do
+        post :book_arena
+      end
+    end
     resources :groups do
       resources :prices
     end
@@ -11,13 +16,13 @@ Rails.application.routes.draw do
       end
     end
     resources :arena do
-      member do
-        post :book_arena
-      end
       collection do
         post :search
         post :search_by_availability
         get :my_arenas
+      end
+      member do
+        post :availibility
       end
     end
     resources :users do 

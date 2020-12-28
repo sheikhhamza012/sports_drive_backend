@@ -14,29 +14,23 @@ class Api::ArenaController < ApplicationController
         
     end
     def search
-        @arenas = Arena.where("name ILIKE ? or location ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
+        @arenas = Arena.joins("left join groups on arenas.id = groups.arena_id and groups.name = '#{params[:group_name]}'").where("arenas.name ILIKE ? or arenas.location ->> 'address' ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
         render 'index'
     end
     def search_by_availability
-        @arenas = Arena.get_available_arenas(params[:location],params[:from_time],params[:to_time])
-        render 'index'
+        @arenas = Arena.get_available_arenas(params[:location], params[:from_time], params[:to_time], params[:group_name])
+        render 'index' 
     
     rescue Exception=>e
         
         render json:{error:true, msg:e.message}
 
     end
-    def book_arena
-        booking = current_user.arena_booking_requests.new(arena_booking_request_params)
-        booking.arena = @arena
-        if booking.save!
-            @request = booking
-            render 'api/arena_booking_request/show'
-        end
-    rescue Exception => e
-        render json:{error:true, msg:booking.errors.first.last}
+    def availibility
+        render 'show'
+    rescue Exception=>e    
+        render json:{error:true, msg:e.message}
     end
-
     private
 
     def set_arena

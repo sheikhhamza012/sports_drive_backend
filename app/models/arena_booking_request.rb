@@ -1,15 +1,19 @@
 class ArenaBookingRequest < ApplicationRecord
     enum status: ["Pending","Accepted","Declined"]
     belongs_to :user
-    belongs_to :arena
+    belongs_to :field
     validates :from_time, presence: true
     validates :to_time, presence: true
     validate :booking_available, :times_are_valid, :on => :create
 
     def booking_available
-        records_in_time = arena.arena_booking_requests.where(from_time: from_time..to_time, status:"Accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"Accepted"))
+        # records_in_time = field.arena_booking_requests.where(from_time: from_time..to_time, status:"Accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"Accepted"))
+        requests = field.arena_booking_requests
+        records_in_time = requests.where("from_time <= '#{from_time.to_time}' and to_time >= '#{from_time.to_time}' and status > 0 ")
+                .or(requests.where("from_time <= '#{to_time.to_time}' and to_time >= '#{to_time.to_time}' and status > 0 "))
+                .or(requests.where("from_time >= '#{from_time.to_time}' and to_time <= '#{to_time.to_time}' and status > 0 "))
         if records_in_time.size>0
-            errors.add(:from_time, "the Arena is not available for this duration")
+            errors.add(:from_time, "the #{field.field_type} is not available for this duration")
         end
     end
     def times_are_valid

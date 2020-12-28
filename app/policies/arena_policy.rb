@@ -24,6 +24,9 @@ class ArenaPolicy < ApplicationPolicy
   def show?
     true 
   end
+  def availibility?
+    true 
+  end
   
 
 end
