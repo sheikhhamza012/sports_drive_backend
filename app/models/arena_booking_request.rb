@@ -1,5 +1,5 @@
 class ArenaBookingRequest < ApplicationRecord
-    enum status: ["Pending","Accepted","Declined"]
+    enum status: ["Pending","Accepted","Declined","Blocked"]
     belongs_to :user
     belongs_to :field
     validates :from_time, presence: true

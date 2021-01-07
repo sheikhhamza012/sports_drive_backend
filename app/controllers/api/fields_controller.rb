@@ -12,6 +12,9 @@ class Api::FieldsController < ApplicationController
     
     def book_arena
         booking = current_user.arena_booking_requests.new(arena_booking_request_params)
+        if params[:status].present? 
+            booking.status = params[:status]
+        end
         booking.field = @field
         if booking.save!
             @request = booking
@@ -42,6 +45,6 @@ class Api::FieldsController < ApplicationController
 
 
     def arena_booking_request_params
-        params.require(:arena_booking_request).permit(:from_time,:to_time)
+        params.require(:arena_booking_request).permit(:from_time,:to_time,:price)
     end
 end

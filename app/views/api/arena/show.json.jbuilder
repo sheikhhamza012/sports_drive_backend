@@ -6,10 +6,16 @@ json.arena do
     json.location @arena.location
     json.image @arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : arena.image.url
     json.groups @arena.groups do |group|
+        json.prices group.prices do |price| 
+            json.merge! price.attributes.except("priceable_id","priceable_type")
+        end
         json.id group.id
         json.name group.name
         json.field_type group.fields.first.field_type
         json.fields group.fields do |field|
+            json.prices field.prices.where(date: params[:arena_booking_request]&.fetch(:from_time).nil? ? nil : Date.parse(params[:arena_booking_request][:from_time]).all_day) do |price| 
+                json.merge! price.attributes.except("priceable_id","priceable_type")
+            end
             json.id field.id
             if params[:arena_booking_request].present? && params[:arena_booking_request][:from_time].present? &&  params[:arena_booking_request][:to_time].present?
                 json.available field.check_availabilty(params[:arena_booking_request][:from_time], params[:arena_booking_request][:to_time])

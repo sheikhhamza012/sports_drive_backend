@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :users  
   namespace :api, defaults: { format: :json } do
     
+    resources :prices, only: [:destroy]
     resources :fields do
+      resources :arena_booking_request, only: [:index]
+      resources :prices, only: [:index,:create]
       member do
         post :book_arena
       end
@@ -13,6 +16,11 @@ Rails.application.routes.draw do
     resources :arena_booking_request do
       collection do
         get :get_active_request
+        get :my_orders
+        get :my_earning
+      end
+      member do
+        get :order_detail
       end
     end
     resources :arena do
