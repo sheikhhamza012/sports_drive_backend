@@ -7,6 +7,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 gem 'carrierwave', '~> 2.0'
 gem 'fog-aws'
 gem "pundit"
+gem 'fcm'
 
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
