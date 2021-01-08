@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     
     resources :prices, only: [:destroy]
+    resources :devices, only: [:create]
     resources :fields do
       resources :arena_booking_request, only: [:index]
       resources :prices, only: [:index,:create]
@@ -15,6 +16,8 @@ Rails.application.routes.draw do
     end
     resources :arena_booking_request do
       collection do
+        get :pending_requests
+        get :send_notif
         get :get_active_request
         get :my_orders
         get :my_earning
@@ -34,6 +37,7 @@ Rails.application.routes.draw do
       end
     end
     resources :users do 
+      resources :devices, only: [:destroy]
       collection do
         post :login
         post :become_a_vendor

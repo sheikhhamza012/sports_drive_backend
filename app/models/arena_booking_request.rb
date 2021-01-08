@@ -5,7 +5,20 @@ class ArenaBookingRequest < ApplicationRecord
     validates :from_time, presence: true
     validates :to_time, presence: true
     validate :booking_available, :times_are_valid, :on => :create
-
+    after_create do
+        NotificationHelper.send(
+            field.group.arena.user.devices.pluck(:fcm_token),
+            { title: "Booking Request Recieved", body:"#{self.user.first_name} #{self.user.last_name} booked a #{field.field_type} for #{from_time.strftime("%a")}", data: {request: self, field: field, user: field.group.arena.user}},
+            NotificationHelper.types[:BOOKING_REQUEST_RECIEVED]
+        )
+    end
+    after_update do
+        NotificationHelper.send(
+            user.devices.pluck(:fcm_token),
+            { title: "Booking Request Accepted", body:"Your request for #{field.field_type} at #{from_time.strftime("%a")} has been accepted", data: {request: self, field: field, user: field.group.arena.user}},
+            NotificationHelper.types[:BOOKING_REQUEST_ACCEPTED]
+        )
+    end
     def booking_available
         # records_in_time = field.arena_booking_requests.where(from_time: from_time..to_time, status:"Accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"Accepted"))
         requests = field.arena_booking_requests

@@ -1,6 +1,7 @@
+
 class Api::ArenaBookingRequestController < ApplicationController 
     before_action :set_field, only:[:index]
-    before_action :set_arena_booking_request,only:[:destroy,:order_detail]
+    before_action :set_arena_booking_request,only:[:destroy,:order_detail,:update]
     def index
         if params[:field_id].present?
             @requests = @field.arena_booking_requests.where(from_time:Date.parse(params[:date]).all_day).where('status = 1 or status = 3')
@@ -12,22 +13,49 @@ class Api::ArenaBookingRequestController < ApplicationController
     rescue Exception=>e
         render json:{error: true, msg: e.message}
     end
+
+    def update
+        if @arena_booking_request.update(arena_booking_request_params)
+            render json:{error: false, msg: "Request Accepted"}
+            return
+        end
+        render json:{error: true, msg: "Error occured"}
+    rescue Exception=>e
+        render json:{error: true, msg: e.message}
+    end
+
     def order_detail
         
     rescue Exception=>e
         render json:{error: true, msg: e.message}
     end
+
+
+
     def my_orders
         @requests = []
         current_user.arena.groups.map do |group|
             group.fields.map do |field|
-                field.arena_booking_requests.map do |request|
+                field.arena_booking_requests.where(status: 1).map do |request|
                     @requests << {request:request, user: request.user, field:field}
                 end
             end 
         end
         render json:{error:false,requests:@requests}
     end
+    
+    def pending_requests
+        @requests = []
+        current_user.arena.groups.map do |group|
+            group.fields.map do |field|
+                field.arena_booking_requests.where(status: 0).where('from_time > ?', Time.now).map do |request|
+                    @requests << {request:request, user: request.user, field:field}
+                end
+            end 
+        end
+        render json:{error:false,requests:@requests}
+    end
+   
     def my_earning
         field_ids = []
         current_user.arena.groups.map do |group|
@@ -75,5 +103,8 @@ class Api::ArenaBookingRequestController < ApplicationController
         if params[:id].present?
             @arena_booking_request=ArenaBookingRequest.find(params[:id])
         end
+    end
+    def arena_booking_request_params
+        params.require(:arena_booking_request).permit(:from_time,:to_time,:status)
     end
 end

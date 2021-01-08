@@ -14,6 +14,7 @@ class User < ApplicationRecord
 
   has_one :arena, dependent: :destroy
   has_many :arena_booking_requests, dependent: :destroy
+  has_many :devices, dependent: :destroy
   has_many :booked_arenas,through: :arena_booking_requests, dependent: :destroy, source: :arena
   has_one :vendor_detail
   def get_visible_attr

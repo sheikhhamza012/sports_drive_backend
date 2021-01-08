@@ -1,5 +1,5 @@
 class Api::UsersController < ApplicationController 
-    skip_before_action :authorise, except: [:get_user,:update,:become_a_vendor]
+    skip_before_action :authorise, except: [:get_user,:update,:become_a_vendor,:save_token]
     def create 
         @current_user = User.new(user_params)
         if current_user.save!
@@ -15,6 +15,7 @@ class Api::UsersController < ApplicationController
         render 'show'
         
     end
+   
     def become_a_vendor
         raise "User has already sent the request" if !current_user.vendor_detail.nil?
         # raise "Request has been denied" if !current_user.vendor_detail.nil? && current_user.vendor_detail.request_status.rejected?
