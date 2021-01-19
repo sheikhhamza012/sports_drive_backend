@@ -24,7 +24,7 @@ class Api::UsersController < ApplicationController
         params[:groups].each do |group_params| 
             group = Group.create!(name: group_params[:name],capacity:group_params[:capacity],arena:arena)
             (0..(group_params[:capacity].to_i-1)).each do |i|
-                Field.create!(field_type:group_params[:place],group:group)
+                Field.create!(field_type:group_params[:place],group:group,name:group_params[:place]+" "+(i+1).to_s)
             end
         end
         render 'show'

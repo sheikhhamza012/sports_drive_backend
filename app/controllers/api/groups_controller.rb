@@ -7,8 +7,17 @@ class Api::GroupsController < ApplicationController
         render 'show'
     end
     def update
+        if @group.update(group_params)
+            return render json:{error:false,msg:"Group Updated"}
+            
+        end
+        render json:{error:true,msg:"Could not update the group"}
+    rescue Exception=>e
         
+        render json:{error:true, msg:e.message}
+
     end
+    
     def search
         @arenas = Arena.where("name ILIKE ? or location ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
         render 'index'
@@ -41,7 +50,7 @@ class Api::GroupsController < ApplicationController
     end
 
 
-    def arena_booking_request_params
-        params.require(:arena_booking_request).permit(:from_time,:to_time)
+    def group_params
+        params.require(:group).permit(:allow_instant_booking)
     end
 end

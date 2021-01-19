@@ -7,13 +7,21 @@ class Api::FieldsController < ApplicationController
         render 'show'
     end
     def update
-        
+        if @field.update!(field_params)
+            render json:{error:false}
+        end 
+    rescue Exception=>e
+
+        render json: {error:true,  msg:e.message}
     end
-    
+
     def book_arena
         booking = current_user.arena_booking_requests.new(arena_booking_request_params)
         if params[:status].present? 
             booking.status = params[:status]
+        end
+        if @field.group.allow_instant_booking?
+            booking.status = "Accepted"
         end
         booking.field = @field
         if booking.save!
@@ -44,7 +52,7 @@ class Api::FieldsController < ApplicationController
     end
 
 
-    def arena_booking_request_params
-        params.require(:arena_booking_request).permit(:from_time,:to_time,:price)
+    def field_params
+        params.require(:field).permit(:image)
     end
 end
