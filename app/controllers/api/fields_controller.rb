@@ -51,7 +51,10 @@ class Api::FieldsController < ApplicationController
         render json: {error:true, msg: msg}
     end
 
-
+    def arena_booking_request_params
+        params.require(:arena_booking_request).permit(:from_time,:to_time,:price)
+    end
+    
     def field_params
         params.require(:field).permit(:image)
     end
