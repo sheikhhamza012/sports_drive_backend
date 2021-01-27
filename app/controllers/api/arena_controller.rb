@@ -14,7 +14,7 @@ class Api::ArenaController < ApplicationController
         
     end
     def search
-        @arenas = Arena.joins("left join groups on arenas.id = groups.arena_id and groups.name = '#{params[:group_name]}'").where("arenas.name ILIKE ? or arenas.location ->> 'address' ILIKE ?","%#{params[:keyword]}%","%#{params[:keyword]}%")
+        @arenas = Arena.joins("left join groups on arenas.id = groups.arena_id where groups.name = '#{params[:group_name]}' and (arenas.name ILIKE '%#{params[:keyword]}%' or arenas.location ->> 'address' ILIKE '%#{params[:keyword]}%')")
         render 'index'
     end
     def search_by_availability
