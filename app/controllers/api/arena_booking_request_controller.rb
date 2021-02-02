@@ -48,7 +48,7 @@ class Api::ArenaBookingRequestController < ApplicationController
         @requests = []
         current_user.arena.groups.map do |group|
             group.fields.map do |field|
-                field.arena_booking_requests.where(status: 0).where('from_time > ?', Time.now).map do |request|
+                field.arena_booking_requests.where(status: 0).where('to_time > ?', Time.now).map do |request|
                     @requests << {request:request, user: request.user, field:field}
                 end
             end 
