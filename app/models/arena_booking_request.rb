@@ -1,5 +1,5 @@
 class ArenaBookingRequest < ApplicationRecord
-    enum status: ["Pending","Accepted","Declined","Blocked"]
+    enum status: ["Pending","Accepted","Declined","Blocked","Canceled"]
     belongs_to :user
     belongs_to :field
     validates :from_time, presence: true
@@ -13,11 +13,20 @@ class ArenaBookingRequest < ApplicationRecord
         )
     end
     after_update do
+        @to = ""
+        if status == "Canceled"
+            @to = field.group.arena.user.devices.pluck(:fcm_token)
+        else
+            @to = user.devices.pluck(:fcm_token)
+
+        end
+
         NotificationHelper.send(
-            user.devices.pluck(:fcm_token),
-            { title: "Booking Request Accepted", body:"Your request for #{field.field_type} at #{from_time.strftime("%a")} has been accepted", data: {request: self, field: field, user: field.group.arena.user}},
+            @to,
+            { title: "Booking Request #{status}", body:"Your request for #{field.field_type} at #{from_time.strftime("%a")} has been #{status}", data: {request: self, field: field, user: field.group.arena.user}},
             NotificationHelper.types[:BOOKING_REQUEST_ACCEPTED]
         )
+
     end
     def booking_available
         # records_in_time = field.arena_booking_requests.where(from_time: from_time..to_time, status:"Accepted").or(arena.arena_booking_requests.where(to_time: from_time..to_time,status:"Accepted"))

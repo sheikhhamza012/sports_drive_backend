@@ -8,7 +8,7 @@ class Api::ArenaBookingRequestController < ApplicationController
             @active_request=nil
         else
             @requests = current_user.arena_booking_requests.where('status < 3')
-            @active_request = @requests.where('from_time >= ? or to_time > ?', Time.now, Time.now).order(:from_time).first
+            @active_request = @requests.where('(from_time >= ? or to_time > ?)', Time.now, Time.now).order(:from_time).first
         end
     rescue Exception=>e
         render json:{error: true, msg: e.message}
