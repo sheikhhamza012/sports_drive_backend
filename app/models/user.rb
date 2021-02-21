@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :devices, dependent: :destroy
   has_many :booked_arenas,through: :arena_booking_requests, dependent: :destroy, source: :arena
   has_one :vendor_detail
+  belongs_to :team
+
   def get_visible_attr
     user = attributes.slice("id","first_name","last_name","email","phone","city","isVendor","about","featured","rating","player_of")
   end
