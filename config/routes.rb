@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users  
   namespace :api, defaults: { format: :json } do
-    resources :teams
+    resources :teams do
+      collection do
+        get :join
+      end
+    end
     resources :prices, only: [:destroy]
     resources :devices, only: [:create]
     resources :fields do
