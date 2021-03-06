@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :teams do
       collection do
         get :join
+        get :get_allowed_individual_joining
       end
     end
     resources :prices, only: [:destroy]

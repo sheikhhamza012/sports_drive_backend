@@ -13,21 +13,41 @@ class  Api::TeamsController < ApplicationController
         msg = e.message
         render json: {error:true, msg: msg}
     end
+
+    def get_allowed_individual_joining
+        @requests = ArenaBookingRequest.where(status: "Accepted",allow_individual_requests: true).where('from_time >= ? or to_time > ?', Time.now, Time.now).order(:from_time)
+        # @teams = []
+
+        # request.each do |r|
+        #     @teams << r.user.my_team
+        # end
+        # byebug
+    end
+
     def join
         token = params[:token]
-        payload = JWT.decode(token, ENV['jwt_secret_key'], true, algorithm: 'HS256').first
-        team = Team.find(payload["team_id"])
+        id = params[:id]
+        if token.present?
+            payload = JWT.decode(token, ENV['jwt_secret_key'], true, algorithm: 'HS256').first
+            team = Team.find(payload["team_id"])
+            status = :accepted
+        elsif id.present?
+            team = Team.find(id)
+            status = :pending
+
+        end
         if team.users.find_by(id: current_user.id).present?
             render json:{error:true, msg: "Already joined"}
         else
-            team.users << current_user
-            if team.users.find(current_user.id).present?
+            @request = team.team_requests.create!(user: current_user,status: status)
+            if @request
                 render json:{error:false}
             else
                 render json:{error:true,msg: "something went wrong"}
             end
 
         end
+        
     rescue Exception=>e
         render json:{error:true, msg: e.message}
 
