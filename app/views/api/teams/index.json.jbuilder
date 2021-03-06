@@ -12,7 +12,7 @@ json.teams @my_teams do |team|
             json.child! do
                 json.assigned false
                 json.token encode_to_jwt({team_id:team.id})
-            end
+            end 
         end
     end
 
