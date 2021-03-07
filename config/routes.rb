@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       collection do
         get :join
         get :get_allowed_individual_joining
+        get :get_challenge_teams
+        get :challenge
       end
     end
     resources :prices, only: [:destroy]

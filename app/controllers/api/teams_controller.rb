@@ -24,6 +24,26 @@ class  Api::TeamsController < ApplicationController
         # byebug
     end
 
+    def get_challenge_teams
+        @requests = ArenaBookingRequest.where(status: "Accepted",allow_challenge_requests: true).where('from_time >= ? or to_time > ?', Time.now, Time.now).order(:from_time)
+        # @teams = []
+
+        # request.each do |r|
+        #     @teams << r.user.my_team
+        # end
+        # byebug
+    end
+    def challenge
+        @challenge = current_user.challenge_requests_sent.create!(request_to:params[:user_id],arena_booking_request_id: params[:request_id])
+        if @challenge
+            render json:{error:false}
+        else
+            render json:{error:true, msg: "Unknown error occured"}
+
+        end
+    rescue Exception=>e
+        render json:{error:true, msg: e.message}
+    end
     def join
         token = params[:token]
         id = params[:id]

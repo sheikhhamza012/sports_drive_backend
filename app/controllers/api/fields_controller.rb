@@ -52,7 +52,7 @@ class Api::FieldsController < ApplicationController
     end
 
     def arena_booking_request_params
-        params.require(:arena_booking_request).permit(:from_time,:to_time,:price,:allow_individual_requests)
+        params.require(:arena_booking_request).permit(:from_time,:to_time,:price,:allow_individual_requests,:allow_challenge_requests)
     end
     
     def field_params
