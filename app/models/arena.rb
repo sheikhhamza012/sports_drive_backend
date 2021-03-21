@@ -2,7 +2,7 @@ class Arena < ApplicationRecord
     belongs_to :user
     validates :name, presence: true
     validates :location, presence: true
-    mount_uploader :image, ImageUploader
+    mount_uploaders :images, ImageUploader
 
     has_many :groups, dependent: :destroy
     

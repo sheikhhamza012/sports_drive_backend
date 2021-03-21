@@ -1,7 +1,7 @@
 class ArenaPolicy < ApplicationPolicy
     attr_reader :user, :arena
 
-  def initialize(user, post)
+  def initialize(user, arena)
     @user = user
     @arena = arena
   end

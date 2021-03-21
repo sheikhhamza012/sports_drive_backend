@@ -4,7 +4,7 @@ json.arena do
     json.rating @arena.rating
     json.name @arena.name
     json.location @arena.location
-    json.image @arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : arena.image.url
+    json.images @arena.images.present? ? @arena.arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] 
     json.groups @arena.groups do |group|
         json.id group.id
         json.name group.name

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
         if token.nil?
             raise Exception.new("User not authorised for this action")
         end
-        payload = JWT.decode(token, ENV['jwt_secret_key'], true, algorithm: 'HS256').first
+        payload = JWT.decode(token, ENV['jwt_secret_key'], true, algorithm: 'HS256').first        
         if payload["user_id"].nil?
             raise Exception.new("Auth token Invalid")
         end

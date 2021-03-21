@@ -16,7 +16,7 @@ else
             json.id @request.field.group.arena.id
             json.name @request.field.group.arena.name
             json.location @request.field.group.arena.location
-            json.image @request.field.group.arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : @request.field.group.arena.image.url
+            json.images @request.field.group.arena.images.present? ? @request.field.group.arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] 
         end
     end
 end

@@ -1,7 +1,7 @@
 json.error false
 json.arena do
     json.merge! @group.arena.attributes.except("user_id","image")
-    json.image (@group.arena.image.url.nil? ? "https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg" :  @group.arena.image.url)
+    json.images (@group.arena.images.present? ? @group.arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] )
     json.groups @group.arena.groups do |group| 
         json.merge! group.attributes.except("arena_id")
         json.fields group.fields do |field| 

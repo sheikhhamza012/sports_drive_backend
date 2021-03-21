@@ -1,6 +1,6 @@
 json.error false
 json.group do
-    json.image (@group.arena.image.url.nil? ? "https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg" :  @group.arena.image.url)
+    json.image (@group.arena.images.present? ? @group.arena.images.first.url : 'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' )
     json.merge! @group.arena.attributes.slice("rating","location")
     json.arena_name @group.arena.attributes['name']
     json.merge! @group.attributes.except("arena_id")

@@ -3,7 +3,7 @@ json.arenas @arenas do |arena|
     json.id arena.id
     json.name arena.name
     json.location arena.location
-    json.image arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : arena.image.url
+    json.images arena.images.present? ? arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] 
     json.groups arena.groups do |group| 
         json.merge! group.attributes.except("arena_id")
         json.field_type group.fields.first.field_type

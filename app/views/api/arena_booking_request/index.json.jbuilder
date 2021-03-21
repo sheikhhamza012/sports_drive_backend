@@ -10,7 +10,7 @@ if @active_request.present?
             json.id @active_request.field.group.arena.id
             json.name @active_request.field.group.arena.name
             json.location @active_request.field.group.arena.location
-            json.image @active_request.field.group.arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : @active_request.field.group.arena.image.url
+            json.images @active_request.field.group.arena.images.present? ?  @active_request.field.group.arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] 
         end
      end
 else
@@ -26,6 +26,6 @@ json.requests @requests do |r|
         json.id r.field.group.arena.id
         json.name r.field.group.arena.name
         json.location r.field.group.arena.location
-        json.image r.field.group.arena.image.url.nil? ?  'https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg' : r.field.group.arena.image.url
+        json.images r.field.group.arena.images.present? ? r.field.group.arena.images.map(&:url) : ['https://acadianakarate.com/wp-content/uploads/2017/04/default-image-620x600.jpg'] 
     end
  end
